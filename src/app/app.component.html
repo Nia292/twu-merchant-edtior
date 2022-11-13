@@ -47,10 +47,16 @@
       <td>{{product.ItemID}}</td>
       <td>
         <p-autoComplete [ngModel]="product.Item"
+                        appendTo="body"
+                        scrollHeight="400px"
                         (ngModelChange)="applySuggestionToLine($event, product)"
                         [suggestions]="product.Suggestions || []"
                         field="Name"
-                        (completeMethod)="filterTWUItemLine($event, product)"></p-autoComplete>
+                        (completeMethod)="filterTWUItemLine($event, product)">
+          <ng-template let-ceItem pTemplate="item">
+            <span>{{ceItem.Name}}</span><span *ngIf="ceItem.DLC !== 'None'"> [{{ceItem.DLC}}]</span>
+          </ng-template>
+        </p-autoComplete>
       </td>
       <td>
         <p-inputNumber [(ngModel)]="product.PriceGold"></p-inputNumber>
