@@ -1,0 +1,77 @@
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <span>TWU Merchant Editor</span>
+  </div>
+  <div class="p-toolbar-group-right">
+    <p-button [style]="{marginRight: '16px'}" label="New Merchant Definition" icon="pi pi-save" (onClick)="handleNewMerchant()"></p-button>
+    <p-button [style]="{marginRight: '16px'}" label="Export Merchant Definition" icon="pi pi-download" (onClick)="handleExportClick()"></p-button>
+    <p-button label="Import Merchant Definition" icon="pi pi-upload" (onClick)="handleLoadClick()"></p-button>
+  </div>
+</p-toolbar>
+<p-table *ngIf="merchant" [value]="merchant.Lines || []">
+  <ng-template pTemplate="caption">
+    <div class="flex align-items-center justify-content-between">
+      <input style="min-width: 600px" pInputText [(ngModel)]="merchant.Name"/>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Item ID</th>
+      <th>Item Name</th>
+      <th>Price Gold</th>
+      <th>Price Silver</th>
+      <th>Price Copper</th>
+      <th>Count</th>
+      <th>Buys</th>
+      <th>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{product.ID}}</td>
+      <td>{{product.ItemID}}</td>
+      <td>
+        <p-autoComplete [ngModel]="product.Item"
+                        (ngModelChange)="applySuggestionToLine($event, product)"
+                        [suggestions]="product.Suggestions || []"
+                        field="Name"
+                        (completeMethod)="filterTWUItemLine($event, product)"></p-autoComplete>
+      </td>
+      <td>
+        <p-inputNumber [(ngModel)]="product.PriceGold"></p-inputNumber>
+      </td>
+      <td>
+        <p-inputNumber [(ngModel)]="product.PriceSilver"></p-inputNumber>
+      </td>
+      <td>
+        <p-inputNumber [(ngModel)]="product.PriceCopper"></p-inputNumber>
+      </td>
+      <td>
+        <p-inputNumber [(ngModel)]="product.Count"></p-inputNumber>
+      </td>
+      <td>{{product.Buy}}</td>
+      <td>
+        <p-button icon="pi pi-trash" (onClick)="deleteLine(product)"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="flex align-items-center justify-content-between">
+      <p-button label="Add Item" icon="pi pi-plus" (onClick)="handleAddItem()"></p-button>
+    </div>
+  </ng-template>
+</p-table>
+<p-dialog header="Load Merchant Definition" [modal]="true" [(visible)]="displayLoadDialog">
+  <textarea pInputTextarea [(ngModel)]="merchantDefinition" style="width: 50vw; height: 50vh">
+  </textarea>
+  <ng-template pTemplate="footer">
+    <p-button label="Load" icon="pi pi-plus" (onClick)="handleLoadMerchant()" [disabled]="!hasMerchantDef()"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Exported Merchant Defintion" [modal]="true" [(visible)]="displayExport">
+  <textarea *ngIf="displayExport" pInputTextarea [readOnly]="true" [ngModel]="getExportedMerchantDef()" style="width: 50vw; height: 50vh">
+  </textarea>
+</p-dialog>
