@@ -8,6 +8,19 @@
     <p-button label="Import Merchant Definition" icon="pi pi-upload" (onClick)="handleLoadClick()"></p-button>
   </div>
 </p-toolbar>
+<div *ngIf="!merchant" style="width: 100vw; display: flex; align-content: center; align-items: center; justify-content: center">
+  <p-card [style]="{marginTop: '64px'}" header="Simple Card">
+    <img style="width: 300px; height: 300px" src="/assets/undraw_empty_cart_co35.svg" alt="empty cart">
+    <ng-template pTemplate="footer">
+      Either create a new merchant defintion or import one.
+      <div style="display: flex; flex-direction: column;  align-content: center; align-items: center; justify-content: center">
+        <p-button [style]="{margin: '8px'}" label="Import Merchant Definition" icon="pi pi-upload" (onClick)="handleLoadClick()"></p-button>
+        <p-button [style]="{margin: '8px'}" label="New Merchant Definition" icon="pi pi-save" (onClick)="handleNewMerchant()"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>
+
 <p-table *ngIf="merchant" [value]="merchant.Lines || []">
   <ng-template pTemplate="caption">
     <div class="flex align-items-center justify-content-between">

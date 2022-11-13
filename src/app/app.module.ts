@@ -15,6 +15,7 @@ import {TableModule} from "primeng/table";
 import {InputNumberModule} from "primeng/inputnumber";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {InputTextModule} from "primeng/inputtext";
+import {CardModule} from "primeng/card";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {InputTextModule} from "primeng/inputtext";
     InputNumberModule,
     AutoCompleteModule,
     InputTextModule,
+    CardModule,
   ],
   providers: [
     MessageService,
