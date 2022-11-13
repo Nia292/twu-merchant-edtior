@@ -30,9 +30,7 @@ jobs:
       - name: Clear old deployment
         run: rm -rf docs
       - name: Build new app
-        run: npm ci && npm run build
-      - name: Create new docs
-        run: mv dist/twu-merchant docs
+        run: npm ci && npm run build-pages
       - name: Push new build
         uses: actions-x/commit@v6
         with:
