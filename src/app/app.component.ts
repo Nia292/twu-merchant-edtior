@@ -18,7 +18,14 @@ export class AppComponent {
   displayExport = false;
 
   constructor(private messageService: MessageService) {
-    this.itemData = allItemData;
+    this.itemData = allItemData.map(raw => {
+      return {
+        ID: Number.parseInt(raw.ID, 10),
+        Name: raw.Name,
+        DLC: raw.DLC,
+        StackSize: Number.parseInt(raw.StackSize)
+      }
+    })
   }
 
   handleLoadClick() {
