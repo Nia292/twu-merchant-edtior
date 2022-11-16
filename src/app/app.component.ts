@@ -20,7 +20,7 @@ export class AppComponent {
   constructor(private messageService: MessageService) {
     this.itemData = allItemData.map(raw => {
       return {
-        ID: Number.parseInt(raw.ID, 10),
+        ID: raw.ID,
         Name: raw.Name,
         DLC: raw.DLC,
         StackSize: Number.parseInt(raw.StackSize)
@@ -122,14 +122,14 @@ export class AppComponent {
   handleAddItem() {
     const newItem: TWUMerchantLine = {
       Item: undefined,
-      ItemID: 0,
+      ItemID: "0",
       Buy: false,
       Count: 1,
       Price: 0,
       PriceGold: 0,
       PriceSilver: 0,
       PriceCopper: 0,
-      ID: getRandomInt(100_000_000, 999_999_999),
+      ID: getRandomId(),
       Suggestions: []
     }
     if (this.merchant) {
@@ -151,7 +151,7 @@ export class AppComponent {
 
   handleNewMerchant() {
     this.merchant = {
-      ID: getRandomInt(100_000_000, 999_999_999),
+      ID: getRandomId(),
       Lines: [],
       Name: 'New Merchant',
       RequiresTag: false,
@@ -159,6 +159,10 @@ export class AppComponent {
     }
     this.handleAddItem();
   }
+}
+
+function getRandomId() {
+  return getRandomInt(100000000, 900000000);
 }
 
 function getRandomInt(min: number, max: number): number {

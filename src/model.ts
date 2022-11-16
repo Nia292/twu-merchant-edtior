@@ -10,7 +10,7 @@ export interface TWUMerchantLine {
   // ID unique to the merchant
   ID: number;
   // ID of the item
-  ItemID: number;
+  ItemID: string;
   // How many items for the price
   Count: number;
   // Price for Count items
@@ -29,7 +29,7 @@ export interface TWUMerchantLine {
 }
 
 export interface CEItem {
-  ID: number;
+  ID: string;
   Name: string;
   StackSize: number;
   DLC: string;
