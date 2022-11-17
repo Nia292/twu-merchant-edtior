@@ -3,6 +3,7 @@
     <span>TWU Merchant Editor</span>
   </div>
   <div class="p-toolbar-group-right">
+    <p-button [style]="{marginRight: '16px'}" label="Show About and Hotkeys" icon="pi pi-info" (onClick)="showHotkeys()"></p-button>
     <p-button [style]="{marginRight: '16px'}" label="New Merchant Definition" icon="pi pi-save" (onClick)="handleNewMerchant()"></p-button>
     <p-button [style]="{marginRight: '16px'}" label="Export Merchant Definition" icon="pi pi-download" (onClick)="handleExportClick()"></p-button>
     <p-button label="Import Merchant Definition" icon="pi pi-upload" (onClick)="handleLoadClick()"></p-button>
@@ -82,7 +83,6 @@
     <div class="flex align-items-center justify-content-between">
       <p-button label="Add Item" icon="pi pi-plus" (onClick)="handleAddItem()"></p-button>
       <p-button [style]="{marginLeft: '8px'}" label="Sort by Name" icon="pi pi-plus" (onClick)="handleSortMerchant()"></p-button>
-      <p-button [style]="{marginLeft: '8px'}" label="Show Hotkeys" icon="pi pi-info" (onClick)="showHotkeys()"></p-button>
     </div>
   </ng-template>
 </p-table>
@@ -99,6 +99,14 @@
   </textarea>
 </p-dialog>
 <p-dialog header="Hotkeys" [modal]="true" [(visible)]="isHotkeysVisible">
+  <h3>About</h3>
+  <p>
+    Just a simple editor for <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2846119484">TWU Merchants.</a>.
+    <br/><br/>
+    Hosted with <a href="https://pages.github.com/">Github Pages</a>. For Privacy, visit GH pages to see what the conditions are. This
+    editor is open source, no tracking added. You can see the source code <a href="https://github.com/Nia292/twu-merchant-edtior">here.</a>
+  </p>
+  <h3>Hotkeys</h3>
   <p>
     There are some hotkeys available:
   </p>
