@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {CEItem, TWUMerchant, TWUMerchantLine} from "../model";
 import allItemData from "./itemdata.json";
@@ -16,6 +16,7 @@ export class AppComponent {
 
   merchant?: TWUMerchant;
   displayExport = false;
+  isHotkeysVisible = false;
 
   constructor(private messageService: MessageService) {
     this.itemData = allItemData.map(raw => {
@@ -26,6 +27,22 @@ export class AppComponent {
         StackSize: Number.parseInt(raw.StackSize)
       }
     })
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  public onGlobalKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && event.shiftKey) {
+      const newLine = this.handleAddItem();
+      this.focusLine(newLine);
+    }
+  }
+
+  private focusLine(line?: TWUMerchantLine): void {
+    // Autofocus
+    const idToFocus: string = `input-product-row-${line?.ID}`;
+    setTimeout(() => {
+      document.getElementById(idToFocus)?.focus();
+    }, 50)
   }
 
   handleLoadClick() {
@@ -119,23 +136,31 @@ export class AppComponent {
     product.ItemID = $event.ID;
   }
 
-  handleAddItem() {
-    const newItem: TWUMerchantLine = {
-      Item: undefined,
-      ItemID: "0",
-      Buy: false,
-      Count: 1,
-      Price: 0,
-      PriceGold: 0,
-      PriceSilver: 0,
-      PriceCopper: 0,
-      ID: getRandomId(),
-      Suggestions: []
+  handleAddItem(): TWUMerchantLine | undefined {
+    if (this.merchant) {
+      const newItem: TWUMerchantLine = {
+        Item: undefined,
+        ItemID: "0",
+        Buy: false,
+        Count: 1,
+        Price: 0,
+        PriceGold: 0,
+        PriceSilver: 0,
+        PriceCopper: 0,
+        ID: getRandomId(),
+        Suggestions: []
+      }
+      this.addItem(newItem);
+      return newItem
     }
+    return undefined;
+  }
+
+  private addItem(newLine: TWUMerchantLine) {
     if (this.merchant) {
       this.merchant.Lines = [
         ...this.merchant?.Lines,
-        newItem
+        newLine
       ]
     }
   }
@@ -159,6 +184,42 @@ export class AppComponent {
     }
     this.handleAddItem();
   }
+
+  handleSortMerchant() {
+    if (this.merchant) {
+      const copy = [...(this.merchant?.Lines || [])]
+      copy.sort(compareByName);
+      this.merchant.Lines = copy;
+    }
+  }
+
+  duplicateLine(product: TWUMerchantLine) {
+    const newItem: TWUMerchantLine = {
+      ...product,
+      ID: getRandomId()
+    };
+    this.addItem(newItem);
+  }
+
+  handleRowKeyUp(event: KeyboardEvent, product: TWUMerchantLine) {
+    if (event.key === 'Delete' && event.shiftKey && this.merchant) {
+      this.deleteLine(product);
+      if (this.merchant.Lines.length >= 1) {
+        const lastProduct = this.merchant.Lines[this.merchant.Lines.length - 1];
+        this.focusLine(lastProduct);
+      }
+    }
+  }
+
+  showHotkeys(): void {
+    this.isHotkeysVisible = true;
+  }
+}
+
+function compareByName(a: TWUMerchantLine, b: TWUMerchantLine) {
+  const nameA = (a.Item?.Name || '').toLowerCase();
+  const nameB = (b.Item?.Name || '').toLowerCase();
+  return nameA.localeCompare(nameB);
 }
 
 function getRandomId() {

@@ -42,11 +42,12 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
-    <tr>
+    <tr (keyup)="handleRowKeyUp($event, product)">
       <td>{{product.ID}}</td>
       <td>{{product.ItemID}}</td>
       <td>
         <p-autoComplete [ngModel]="product.Item"
+                        [inputId]="'input-product-row-' + product.ID"
                         appendTo="body"
                         scrollHeight="400px"
                         (ngModelChange)="applySuggestionToLine($event, product)"
@@ -73,12 +74,15 @@
       <td>{{product.Buy}}</td>
       <td>
         <p-button icon="pi pi-trash" (onClick)="deleteLine(product)"></p-button>
+        <p-button [style]="{marginLeft: '8px'}"  icon="pi pi-clone" (onClick)="duplicateLine(product)"></p-button>
       </td>
     </tr>
   </ng-template>
   <ng-template pTemplate="summary">
     <div class="flex align-items-center justify-content-between">
       <p-button label="Add Item" icon="pi pi-plus" (onClick)="handleAddItem()"></p-button>
+      <p-button [style]="{marginLeft: '8px'}" label="Sort by Name" icon="pi pi-plus" (onClick)="handleSortMerchant()"></p-button>
+      <p-button [style]="{marginLeft: '8px'}" label="Show Hotkeys" icon="pi pi-info" (onClick)="showHotkeys()"></p-button>
     </div>
   </ng-template>
 </p-table>
@@ -93,4 +97,16 @@
 <p-dialog header="Exported Merchant Defintion" [modal]="true" [(visible)]="displayExport">
   <textarea *ngIf="displayExport" pInputTextarea [readOnly]="true" [ngModel]="getExportedMerchantDef()" style="width: 50vw; height: 50vh">
   </textarea>
+</p-dialog>
+<p-dialog header="Hotkeys" [modal]="true" [(visible)]="isHotkeysVisible">
+  <p>
+    There are some hotkeys available:
+  </p>
+  <ul>
+    <li><strong>Shift+Enter</strong> creates a new line in the merchant editor and focuses the item name</li>
+    <li><strong>Shift+Delete</strong> deletes the line you currently have focus on and focuses the previous item</li>
+  </ul>
+  <p>
+    Feel free to suggest more hotkeys via discord.
+  </p>
 </p-dialog>
