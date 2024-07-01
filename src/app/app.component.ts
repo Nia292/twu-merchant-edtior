@@ -223,7 +223,7 @@ function compareByName(a: TWUMerchantLine, b: TWUMerchantLine) {
 }
 
 function getRandomId() {
-  return getRandomInt(100000000, 900000000);
+  return getRandomInt(100_000_000, 900_000_000);
 }
 
 function getRandomInt(min: number, max: number): number {
